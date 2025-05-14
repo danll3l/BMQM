@@ -63,7 +63,7 @@
 
   <div class="section">
     <h2>💻 Qiskit Integration</h2>
-    <p>Using Qiskit, we simulate discrete breathing states across qubit lattices. Each qubit encodes amplitude and phase; unitary operators simulate <code>\mathcal{H} \star \Omega</code> evolution.</p>
+    <p>Using Qiskit, we simulate discrete breathing states across qubit lattices. Each qubit encodes amplitude and phase; unitary operators simulate (H★Ω) evolution.</p>
 
     <pre style="background-color:#002b36;color:#00ff88;padding:1rem;border-radius:8px;overflow-x:auto;"><code>
 from qiskit import QuantumCircuit, QuantumRegister, Aer, transpile, assemble
@@ -111,6 +111,46 @@ plt.ylabel('Breathing Probability')
 plt.title('Breathing Amplitude Distribution after Evolution')
 plt.show()
     </code></pre>
+
+<h2>🧠 Finding the Sionic Constant σ Using Qiskit</h2>
+<p>
+Using a variational quantum eigensolver (VQE), we estimate the lowest non-zero frequency associated with a custom breathing Hamiltonian. The resulting oscillation frequency squared approximates the Sionic constant σ.
+</p>
+
+<pre style="background-color:#002b36;color:#00ff88;padding:1rem;border-radius:8px;overflow-x:auto;"><code>
+from qiskit import Aer, QuantumCircuit
+from qiskit.opflow import X, Z, I, StateFn, PauliSumOp
+from qiskit.algorithms import VQE
+from qiskit.circuit.library import TwoLocal
+from qiskit.algorithms.optimizers import SLSQP
+
+# Define a custom breathing-like Hamiltonian
+# Simulating simplified local breathing interactions (1-qubit H)
+H = (1.5 * Z) + (0.7 * X)
+
+# Wrap as operator
+H_op = PauliSumOp.from_operator(H)
+
+# Build ansatz (trial circuit)
+ansatz = TwoLocal(rotation_blocks='ry', entanglement_blocks='cz', reps=1)
+
+# Choose classical optimizer
+optimizer = SLSQP(maxiter=100)
+
+# Setup VQE
+vqe = VQE(ansatz, optimizer=optimizer, quantum_instance=Aer.get_backend('aer_simulator_statevector'))
+
+# Run VQE
+result = vqe.compute_minimum_eigenvalue(H_op)
+
+# Output the result
+ground_energy = result.eigenvalue.real
+sionic_constant = round(abs(ground_energy)**2, 4)
+
+print(f"Estimated σ (Sionic Constant): {sionic_constant}")
+</code></pre>
+
+    
   </div>
 
   <div class="section">
@@ -134,12 +174,14 @@ plt.show()
   <p>If you think you could add to this experiment, please reach out with doubts or improvements:<br>
      <a href="mailto:lancharesdaniel@gmail.com">lancharesdaniel@gmail.com</a></p>
 
-  <p style="margin-top: 1em;">🔗 <strong>Share this project:</strong></p>
-  <div style="font-size: 1.2em;">
-    <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20new%20quantum%20theory%20on%20Breathing%20Membrane%20Quantum%20Mechanics!%20https://danll3l.github.io/BMQM/" target="_blank">🐦 Share on X</a> |
-    <a href="https://instagram.com" target="_blank">📸 Share on Instagram</a> |
-    <a href="mailto:?subject=Breathing%20Membrane%20Quantum%20Mechanics&body=Have%20a%20look%20at%20this%20experimental%20theory%20of%20quantum%20identity%3A%20https://danll3l.github.io/BMQM/">✉️ Share via Email</a>
-  </div>
+ <p style="margin-top: 1em;">🔗 <strong>Share this project:</strong></p>
+<div style="font-size: 1.2em;">
+  <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20new%20quantum%20membrane%20theory!%20https://danlnl3l.github.io/BMQM/" target="_blank">🐦 Share on X</a> |
+  <a href="https://instagram.com" target="_blank">📸 Share on Instagram</a> |
+  <a href="https://wa.me/?text=Check%20out%20this%20new%20quantum%20membrane%20theory!%20https://danlnl3l.github.io/BMQM/" target="_blank">📱 Share on WhatsApp</a> |
+  <a href="mailto:?subject=Breathing%20Membrane%20Quantum%20Mechanics&body=Have%20a%20look%20at%20this%20BMQM%20proposal:%20https://danlnl3l.github.io/BMQM/">📧 Email this link</a>
+</div>
+
 </div>
 
 
