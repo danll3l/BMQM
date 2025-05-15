@@ -48,39 +48,100 @@
   </div>
 
 
-<a href="https://mybinder.org/v2/gh/danll3l/BMQM/main?urlpath=voila%2Frender%2Fbreathing_demo.ipynb"
-   target="_blank" rel="noopener">
-  <img src="https://mybinder.org/badge_logo.svg" alt="Launch demo on Binder">
-  Run the Breathing Demo
-</a>
 
-  <script>
-let theta = 0;
-function setup() {
-  let cnv = createCanvas(400, 400, WEBGL);
-  cnv.parent('breathing-demo');
-}
-function draw() {
-  background(240);
-  rotateX(PI/3);
-  let amp = sin(theta);
-  stroke(50);
-  noFill();
-  beginShape(TRIANGLE_STRIP);
-  let N = 80, R = 150;
-  for (let i = 0; i <= N; i++) {
-    let a = map(i, 0, N, 0, TWO_PI);
-    let r = R + amp * 50 * sin(3 * a);
-    let x = r * cos(a), y = r * sin(a);
-    vertex(x, y, amp * 20);
-    vertex(x, y, -amp * 20);
-  }
-  endShape();
-  theta += 0.02;
-}
+
+
+
+
+
+
 
 
   
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BMQM Interactive Demos</title>
+
+  <!-- p5.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; }
+    .demo-link { margin-bottom: 2rem; }
+    #breathing-demo { display: inline-block; }
+  </style>
+</head>
+<body>
+
+  <h2>Launch the Python Breathing Demo</h2>
+  <div class="demo-link">
+    <a 
+      href="https://mybinder.org/v2/gh/danll3l/BMQM/main?urlpath=voila%2Frender%2Fbreathing_demo.ipynb" 
+      target="_blank" rel="noopener"
+    >
+      <img src="https://mybinder.org/badge_logo.svg" alt="Launch on Binder" style="vertical-align: middle;">
+      <span>Run the Breathing Demo (Binder)</span>
+    </a>
+  </div>
+
+  <h2>Client‐Side p5.js Breathing Membrane</h2>
+  <div id="breathing-demo"></div>
+
+  <script>
+    // p5.js sketch
+    let theta = 0;
+    function setup() {
+      const cnv = createCanvas(400, 400, WEBGL);
+      cnv.parent('breathing-demo');
+      noFill();
+      stroke(50);
+    }
+    function draw() {
+      background(240);
+      rotateX(PI / 3);
+
+      // amplitude oscillates between -1 and +1
+      const amp = sin(theta);
+
+      // draw a wavy ring (membrane slice)
+      beginShape(TRIANGLE_STRIP);
+      const N = 120;
+      const R = 150;
+      for (let i = 0; i <= N; i++) {
+        const a = map(i, 0, N, 0, TWO_PI);
+        const r = R + amp * 40 * sin(3 * a);
+        const x = r * cos(a);
+        const y = r * sin(a);
+
+        // upper and lower vertices give thickness in Z
+        vertex(x, y, amp * 20);
+        vertex(x, y, -amp * 20);
+      }
+      endShape();
+
+      theta += 0.02;
+    }
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
   <div class="section">
   <h2>🧬 BMQM Postulates</h2>
 
