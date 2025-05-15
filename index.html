@@ -86,47 +86,10 @@
     </a>
   </div>
 
-  <h2>Client‐Side p5.js Breathing Membrane</h2>
-  <div id="breathing-demo"></div>
 
-  <script>
-    // p5.js sketch
-    let theta = 0;
-    function setup() {
-      const cnv = createCanvas(400, 400, WEBGL);
-      cnv.parent('breathing-demo');
-      noFill();
-      stroke(50);
-    }
-    function draw() {
-      background(240);
-      rotateX(PI / 3);
 
-      // amplitude oscillates between -1 and +1
-      const amp = sin(theta);
 
-      // draw a wavy ring (membrane slice)
-      beginShape(TRIANGLE_STRIP);
-      const N = 120;
-      const R = 150;
-      for (let i = 0; i <= N; i++) {
-        const a = map(i, 0, N, 0, TWO_PI);
-        const r = R + amp * 40 * sin(3 * a);
-        const x = r * cos(a);
-        const y = r * sin(a);
 
-        // upper and lower vertices give thickness in Z
-        vertex(x, y, amp * 20);
-        vertex(x, y, -amp * 20);
-      }
-      endShape();
-
-      theta += 0.02;
-    }
-  </script>
-
-</body>
-</html>
 
 
 
@@ -146,7 +109,7 @@
   <h2>🧬 BMQM Postulates</h2>
 
 <img src="Postulates_1.png" alt=" " width="2500" height="auto">
-<h2>🧬 BMQM at Cosmic and Molecule scales</h2>
+<h2>🧬 BMQM at Cosmic and at Molecular scales</h2>
 
 <img src="BigandSmall.png" alt=" " width="2500" height="auto">
     
