@@ -47,6 +47,67 @@
     <p><a href="Breathing_Membrane_Quantum_Mechanics_2025.pdf" target="_blank">⭐️Click here to download the Updated BMQM 2025 PDF⭐️</a></p>
   </div>
 
+
+<iframe
+  src="https://mybinder.org/v2/gh/YourUser/BMQM/HEAD?urlpath=voila%2Frender%2Fbreathing_demo.ipynb"
+  width="800" height="600"
+  frameborder="0"
+  allowfullscreen>
+</iframe>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+<div id="breathing-demo"></div>
+
+  <script>
+let theta = 0;
+function setup() {
+  let cnv = createCanvas(400, 400, WEBGL);
+  cnv.parent('breathing-demo');
+}
+function draw() {
+  background(240);
+  rotateX(PI/3);
+  let amp = sin(theta);
+  stroke(50);
+  noFill();
+  beginShape(TRIANGLE_STRIP);
+  let N = 80, R = 150;
+  for (let i = 0; i <= N; i++) {
+    let a = map(i, 0, N, 0, TWO_PI);
+    let r = R + amp * 50 * sin(3 * a);
+    let x = r * cos(a), y = r * sin(a);
+    vertex(x, y, amp * 20);
+    vertex(x, y, -amp * 20);
+  }
+  endShape();
+  theta += 0.02;
+}
+</script>
+<body>
+  <h3>2D Breathing Membrane Demo</h3>
+  <div id="breathing-demo"></div>
+  <!-- p5.js + your script -->
+</body>
+
+<section>
+  <h2>Interactive Breathing Membrane (Binder)</h2>
+  <a href="https://mybinder.org/v2/gh/YourUser/BMQM/HEAD?urlpath=voila%2Frender%2Fbreathing_demo.ipynb">
+    <img src="https://mybinder.org/badge_logo.svg" alt="Launch on Binder">
+    Run in Binder
+  </a>
+  <iframe src="https://mybinder.org/v2/gh/YourUser/BMQM/HEAD?urlpath=voila%2Frender%2Fbreathing_demo.ipynb"
+          width="900" height="600" frameborder="0" allowfullscreen>
+  </iframe>
+</section>
+
+<section>
+  <h2>Lightweight p5.js Demo</h2>
+  <div id="breathing-demo"></div>
+</section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+<script src="breathing.js"></script>
+
+
+  
   <div class="section">
   <h2>🧬 BMQM Postulates</h2>
 
