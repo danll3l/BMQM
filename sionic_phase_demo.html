@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sionic Phase Stability Demo</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    canvas {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #111;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(255, 221, 102, 0.4);
+    }
+    h1 {
+      color: #ffdd66;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quantum Stability Under Breathing Phase (√σ)</h1>
+  <canvas id="sionicChart"></canvas>
+
+  <script>
+    const ctx = document.getElementById('sionicChart').getContext('2d');
+    const sigmaValues = Array.from({ length: 50 }, (_, i) => 1.0 + i * 0.03);
+
+    // Simulate Z expectation value as a cosine interference pattern
+    const zExpectations = sigmaValues.map(sigma => {
+      const omega = Math.sqrt(sigma);
+      const phase = omega;
+      const amplitude = Math.cos(phase);  // Simulate Hadamard interference result
+      return amplitude;
+    });
+
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: sigmaValues.map(v => v.toFixed(3)),
+        datasets: [{
+          label: 'Z expectation value',
+          data: zExpectations,
+          borderColor: '#ffdd66',
+          borderWidth: 2,
+          fill: false,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'σ value',
+              color: '#ffffff'
+            },
+            ticks: { color: '#ccc' },
+            grid: { color: '#333' }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Z expectation value',
+              color: '#ffffff'
+            },
+            min: -1,
+            max: 1,
+            ticks: { color: '#ccc' },
+            grid: { color: '#333' }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { color: '#ffdd66' }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
