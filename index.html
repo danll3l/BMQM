@@ -311,33 +311,150 @@ body {
 </body>
 </html>
 
-  
 
 
-<div style="text-align: center; padding: 2rem;">
-  <h2 style="color: #ffe066;">Sionic Network Interactive</h2>
-  
-  <iframe 
-    src="sionic_network_demo.html" 
-    width="100%" 
-    height="450" 
-    style="border: none; background: #0a0a0a;"
-    allowfullscreen>
-  </iframe>
 
-  <p style="color: #ccc; font-size: 1.1rem; max-width: 900px; margin: 2rem auto 0; line-height: 1.7;">
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sionic Network Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #0a0a0a;
+      color: white;
+      font-family: sans-serif;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #ffe066;
+    }
+    .controls {
+      text-align: center;
+      margin: 1rem;
+    }
+    .description {
+      color: #ccc;
+      font-size: 1.1rem;
+      max-width: 900px;
+      margin: 2rem auto;
+      line-height: 1.7;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sionic Network Interactive</h1>
+
+  <div class="controls">
+    <label for="kSlider">Coupling (K): </label>
+    <input type="range" id="kSlider" min="0" max="5" value="2" step="0.1">
+    <span id="kValue">2.0</span>
+    <button onclick="resetNetwork()">Reset</button>
+  </div>
+
+  <script>
+    let N = 30;
+    let K = 2.0;
+    let dt = 0.05;
+    let psi = [];
+    let dpsi = [];
+
+    function sionicAccel(x) {
+      return (2 * x * (1 - x * x)) / Math.pow(1 + x * x, 3);
+    }
+
+    function setup() {
+      createCanvas(windowWidth, 400);
+      initNetwork();
+      let slider = document.getElementById("kSlider");
+      slider.addEventListener("input", () => {
+        K = parseFloat(slider.value);
+        document.getElementById("kValue").textContent = K.toFixed(1);
+      });
+    }
+
+    function draw() {
+      background(10);
+      stroke(255);
+      fill(255);
+      let spacing = width / N;
+      for (let i = 0; i < N; i++) {
+        let x = i * spacing + spacing / 2;
+        let y = height / 2 - psi[i] * 100;
+        circle(x, y, 12);
+      }
+
+      let new_dpsi = [];
+      for (let i = 0; i < N; i++) {
+        let coupling = 0;
+        for (let j = 0; j < N; j++) {
+          coupling += Math.sin(psi[j] - psi[i]);
+        }
+        coupling *= (K / N);
+        let acc = sionicAccel(psi[i]) + coupling;
+        new_dpsi[i] = dpsi[i] + acc * dt;
+      }
+      for (let i = 0; i < N; i++) {
+        dpsi[i] = new_dpsi[i];
+        psi[i] += dpsi[i] * dt;
+      }
+    }
+
+    function initNetwork() {
+      psi = [];
+      dpsi = [];
+      for (let i = 0; i < N; i++) {
+        psi[i] = random(-1, 1);
+        dpsi[i] = random(-0.5, 0.5);
+      }
+    }
+
+    function resetNetwork() {
+      initNetwork();
+    }
+  </script>
+
+  <div class="description">
     This animation represents a <strong>network of breathing nodes</strong> evolving under the 
-    <strong>Sionic Equation</strong>, coupled through a dynamic synchronization mechanism.
-    <br><br>
+    <strong>Sionic Equation</strong>, coupled through a dynamic synchronization mechanism.<br><br>
     Each point is a unit of identity breathing with its own internal rhythm. As time progresses,
     interactions with neighboring nodes lead to a phenomenon of <em>collective coherence</em>. 
-    This transition into a shared breathing pattern models how <strong>fluid identity emerges from synchrony</strong>.
-    <br><br>
+    This transition into a shared breathing pattern models how <strong>fluid identity emerges from synchrony</strong>.<br><br>
     The parameter <code>K</code> represents the <strong>degree of entanglement</strong>. When <code>K</code> is strong enough,
-    the oscillations stabilize and align. This simulates how the <code>σ</code> constant affects the breathing field in BMQM:
+    the oscillations stabilize and align. This simulates how the <code>&sigma;</code> constant affects the breathing field in BMQM:
     it determines whether a system remains fragmented or converges into a coherent identity.
-  </p>
-</div>
+  </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
 
 
 
