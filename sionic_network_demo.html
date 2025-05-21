@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sionic Network Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background-color: #0a0a0a;
+      color: white;
+      font-family: sans-serif;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #ffe066;
+    }
+  </style>
+</head>
+<body>
+  <h1>Red Siónica Interactiva</h1>
+  <script>
+    let N = 30;
+    let K = 2.0;
+    let dt = 0.05;
+    let psi = [];
+    let dpsi = [];
+
+    function sionicAccel(x) {
+      return (2 * x * (1 - x * x)) / Math.pow(1 + x * x, 3);
+    }
+
+    function setup() {
+      createCanvas(windowWidth, 400);
+      for (let i = 0; i < N; i++) {
+        psi[i] = random(-1, 1);
+        dpsi[i] = random(-0.5, 0.5);
+      }
+    }
+
+    function draw() {
+      background(10);
+      stroke(255);
+      fill(255);
+      let spacing = width / N;
+      for (let i = 0; i < N; i++) {
+        let x = i * spacing + spacing / 2;
+        let y = height / 2 - psi[i] * 100;
+        circle(x, y, 12);
+      }
+
+      // Actualizar dinamica
+      let new_dpsi = [];
+      for (let i = 0; i < N; i++) {
+        let coupling = 0;
+        for (let j = 0; j < N; j++) {
+          coupling += Math.sin(psi[j] - psi[i]);
+        }
+        coupling *= (K / N);
+        let acc = sionicAccel(psi[i]) + coupling;
+        new_dpsi[i] = dpsi[i] + acc * dt;
+      }
+      for (let i = 0; i < N; i++) {
+        dpsi[i] = new_dpsi[i];
+        psi[i] += dpsi[i] * dt;
+      }
+    }
+  </script>
+</body>
+</html>
