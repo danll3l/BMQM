@@ -369,8 +369,16 @@ body {
     <label for="kSlider">Coupling (K): </label>
     <input type="range" id="kSlider" min="0" max="5" value="2" step="0.1">
     <span id="kValue">2.0</span>
+    <br><br>
+    <label for="nSlider">Number of Nodes (N): </label>
+    <input type="range" id="nSlider" min="5" max="100" value="30" step="1">
+    <span id="nValue">30</span>
+    <br><br>
+    <button onclick="togglePause()">Pause/Resume</button>
     <button onclick="resetNetwork()">Reset</button>
   </div>
+
+  <main></main>
 
   <script>
     let N = 30;
@@ -378,22 +386,35 @@ body {
     let dt = 0.05;
     let psi = [];
     let dpsi = [];
+    let canvas;
+    let paused = false;
 
     function sionicAccel(x) {
       return (2 * x * (1 - x * x)) / Math.pow(1 + x * x, 3);
     }
 
     function setup() {
-      createCanvas(windowWidth, 400);
+      canvas = createCanvas(windowWidth, 400);
+      canvas.parent(document.querySelector('main'));
       initNetwork();
-      let slider = document.getElementById("kSlider");
-      slider.addEventListener("input", () => {
-        K = parseFloat(slider.value);
+
+      const kSlider = document.getElementById("kSlider");
+      kSlider.addEventListener("input", () => {
+        K = parseFloat(kSlider.value);
         document.getElementById("kValue").textContent = K.toFixed(1);
+      });
+
+      const nSlider = document.getElementById("nSlider");
+      nSlider.addEventListener("input", () => {
+        N = parseInt(nSlider.value);
+        document.getElementById("nValue").textContent = N;
+        resetNetwork();
       });
     }
 
     function draw() {
+      if (paused) return;
+
       background(10);
       stroke(255);
       fill(255);
@@ -432,6 +453,10 @@ body {
     function resetNetwork() {
       initNetwork();
     }
+
+    function togglePause() {
+      paused = !paused;
+    }
   </script>
 
   <div class="description">
@@ -446,6 +471,7 @@ body {
   </div>
 </body>
 </html>
+
 
 
 
